@@ -1,0 +1,28 @@
+{
+  "version": 3,
+  "plugin": {
+    "pattern": ".so",
+    "folder": "/etc/krakend/firetail-krakend-plugin"
+  },
+  "endpoints": [
+    {
+      "endpoint": "/test/{id}",
+      "backend": [
+        {
+          "host": [
+            "http://localhost:8080"
+          ],
+          "url_pattern": "/__health"
+        }
+      ]
+    }
+  ],
+  "extra_config": {
+    "plugin/http-server": {
+      "name": ["firetail-krakend-plugin"],
+      "firetail-krakend-plugin": {
+        "openapi-spec-path": "/etc/krakend/appspec.yaml"
+      }
+    }
+  }
+}

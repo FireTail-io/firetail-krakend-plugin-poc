@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info:
+  title: KrakenD Firetail Plugin Example
+  version: 1.0.0
+paths:
+  /__health:
+    get:
+      summary: Health Check
+      description: Check the health of the KrakenD instance
+      responses:
+        '200':
+          description: Healthy response
