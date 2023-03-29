@@ -10,18 +10,14 @@ import (
 	firetail "github.com/FireTail-io/firetail-go-lib/middlewares/http"
 )
 
-// pluginName is the plugin name
-var pluginName = "firetail-krakend-plugin"
-
-// HandlerRegisterer is the symbol the plugin loader will try to load. It must implement the Registerer interface
-var HandlerRegisterer = registerer(pluginName)
+const pluginName = "firetail-krakend-plugin"
 
 type registerer string
 
-func (r registerer) RegisterHandlers(f func(
-	name string,
-	handler func(context.Context, map[string]interface{}, http.Handler) (http.Handler, error),
-)) {
+// the symbol the plugin loader will try to load
+var HandlerRegisterer = registerer(pluginName)
+
+func (r registerer) RegisterHandlers(f func(name string, handler func(context.Context, map[string]interface{}, http.Handler) (http.Handler, error))) {
 	f(string(r), r.registerHandlers)
 }
 
