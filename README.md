@@ -1,41 +1,45 @@
 # Firetail KrakenD Plugin POC
 
-A KrakenD plugin proof of concept using the [firetail-go-lib](https://github.com/FireTail-io/firetail-go-lib)'s http middleware.
+A KrakenD plugin for Firetail, built on [firetail-go-lib](https://github.com/FireTail-io/firetail-go-lib)'s http middleware.
 
 
 
 ## Getting Started
 
-First, build the plugin using the krakend/builder image:
+The Firetail KrakenD plugin distributable is a single `.so` file. To build, it, use the KrakenD builder image with a version that matches the version of the KrakenD runtime image you want to use:
 
 ```bash
-cd firetail-krakend-plugin
 docker run --platform linux/amd64 -it -v "$PWD:/app" -w /app krakend/builder:2.2.1 go build -buildmode=plugin -o firetail-krakend-plugin.so .
 ```
 
-Next, run KrakenD in docker with the plugin using the [krakend.json](./krakend.json) included in this repo:
+You should now have a file named `firetail-krakend-plugin.so`. 
+
+An [`appspec.yaml`](./example/appspec.yaml) and [`krakend.json`](./example/krakend.json) is included in the [`example`](./example) directory to test out the plugin. To get this running, first copy the `.so` file into the `example` directory and `cd` into it:
 
 ```bash
-cd ..
+mv firetail-krakend-plugin.so example
+cd example
+```
+
+You can then run the KrakenD runtime image with the plugin and provided example [`appspec.yaml`](./example/appspec.yaml) and [`krakend.json`](./example/krakend.json):
+
+```bash
 docker run --platform linux/amd64 -p 8080:8080 -v $PWD:/etc/krakend/ devopsfaith/krakend run --config /etc/krakend/krakend.json
 ```
 
-Curling KrakenD's `__health` endpoint should be fine as it's in the included [appspec.yaml](./appspec.yaml):
 
-```bash
-curl localhost:8080/__health
-```
 
-```json
-{"agents":{},"now":"2023-03-24 11:49:27.692165134 +0000 UTC m=+8.586939713","status":"ok"}
-```
+## Configuration
 
-Curling the `/test/{id}` endpoint defined in the [krakend.json](./krakend.json) should be blocked as it's not included in the [appspec.yaml](./appspec.yaml).
+See the KrakenD docs on [injecting plugins](https://www.krakend.io/docs/extending/injecting-plugins/).
 
-```bash
-curl localhost:8080/test/10
-```
+See the [example/krakend.json](./example/krakend.json) for an example configuration of the Firetail KrakenD plugin. The following table describes all of the currently supported configuration fields, all of which are optional:
 
-```json
-{"code":404,"title":"the resource \"/test/10\" could not be found","detail":"a path for \"/test/10\" could not be found in your appspec"}
-```
+| Field Name                   | Type   | Example                                                      | Description                                                  |
+| ---------------------------- | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `logs-api-token`             | String | "PS-XX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" | Your API token for the Firetail SaaS. If unset, no logs will be sent to Firetail. |
+| `logs-api-url`               | String | "https://api.logging.eu-west-1.prod.firetail.app/logs/bulk"  | The URL to which logs will be sent via POST requests         |
+| `openapi-spec-path`          | String | "/etc/krakend/appspec.yaml"                                  | The absolute path to your appspec. By default, no appspec will be used |
+| `enable-request-validation`  | String | "1", "t", "T", "TRUE", "true", "True", "0", "f", "F", "FALSE", "false", "False" | Whether or not requests should be validated against the provided appspec. This is disabled by default and requires `openapi-spec-path` to be defined |
+| `enable-response-validation` | String | "1", "t", "T", "TRUE", "true", "True", "0", "f", "F", "FALSE", "false", "False" | Whether or not requests should be validated against the provided appspec. This is disabled by default and requires `openapi-spec-path` to be defined |
+
