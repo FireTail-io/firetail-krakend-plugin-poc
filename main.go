@@ -31,21 +31,18 @@ func (r registerer) registerHandlers(_ context.Context, extra map[string]interfa
 	}
 
 	// Extract options from config
-	options := firetail.Options{
-		DisableRequestValidation:  false,
-		DisableResponseValidation: false,
-	}
+	options := firetail.Options{}
 	openapiSpecPath, ok := config["openapi-spec-path"].(string)
 	if ok {
 		options.OpenapiSpecPath = openapiSpecPath
 	}
-	logApiKey, ok := config["log-api-key"].(string)
+	logsApiToken, ok := config["logs-api-token"].(string)
 	if ok {
-		options.LogApiKey = logApiKey
+		options.LogsApiToken = logsApiToken
 	}
-	logApiUrl, ok := config["log-api-url"].(string)
+	logsApiUrl, ok := config["logs-api-url"].(string)
 	if ok {
-		options.LogApiUrl = logApiUrl
+		options.LogsApiUrl = logsApiUrl
 	}
 
 	// Create firetail middleware

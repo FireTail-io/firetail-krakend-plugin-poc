@@ -2,7 +2,7 @@ module firetail-krakend-plugin
 
 go 1.19
 
-require github.com/FireTail-io/firetail-go-lib v0.0.0-beta
+require github.com/FireTail-io/firetail-go-lib v0.0.0
 
 require (
 	github.com/getkin/kin-openapi v0.110.0 // indirect
