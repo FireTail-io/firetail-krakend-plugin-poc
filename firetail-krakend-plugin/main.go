@@ -1,4 +1,6 @@
-// SPDX-License-Identifier: Apache-2.0
+// A KrakenD server plugin which uses the Firetail Go Library to forward request and response data to the Firetail SaaS.
+// Derived from the example KrakenD http server plugin provided here:
+// https://www.krakend.io/docs/extending/http-server-plugins/
 
 package main
 
