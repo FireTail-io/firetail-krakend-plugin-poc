@@ -44,6 +44,7 @@ func (r registerer) registerHandlers(_ context.Context, extra map[string]interfa
 	if ok {
 		options.LogsApiUrl = logsApiUrl
 	}
+	// TODO: parse enable-request-validation and enable-response-validation with strconv.ParseBool
 
 	// Create firetail middleware
 	firetailMiddleware, err := firetail.GetMiddleware(&options)
