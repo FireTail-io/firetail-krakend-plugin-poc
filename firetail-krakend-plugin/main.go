@@ -5,7 +5,6 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 
 	firetail "github.com/FireTail-io/firetail-go-lib/middlewares/http"
@@ -27,36 +26,32 @@ func (r registerer) RegisterHandlers(f func(
 }
 
 func (r registerer) registerHandlers(_ context.Context, extra map[string]interface{}, h http.Handler) (http.Handler, error) {
-	// If the plugin requires some configuration, it should be under the name of the plugin. E.g.:
-	/*
-	   "extra_config":{
-	       "plugin/http-server":{
-	           "name":["krakend-server-example"],
-	           "krakend-server-example":{
-	               "openapi-spec-path": "/some-path"
-	           }
-	       }
-	   }
-	*/
-	// The config variable contains all the keys you have defined in the configuration
-	// if the key doesn't exists or is not a map the plugin returns an error and the default handler
+	// This plugin requires config, so return an err if not found in the krakend.json's extra_config
 	config, ok := extra[pluginName].(map[string]interface{})
 	if !ok {
 		return h, errors.New("configuration not found")
 	}
 
 	// Extract options from config
-	path, _ := config["openapi-spec-path"].(string)
-	logger.Debug(fmt.Sprintf("The Firetail middleware will use the openapi spec located at %s", path))
+	options := firetail.Options{
+		DisableRequestValidation:  false,
+		DisableResponseValidation: false,
+	}
+	openapiSpecPath, ok := config["openapi-spec-path"].(string)
+	if ok {
+		options.OpenapiSpecPath = openapiSpecPath
+	}
+	logApiKey, ok := config["log-api-key"].(string)
+	if ok {
+		options.LogApiKey = logApiKey
+	}
+	logApiUrl, ok := config["log-api-url"].(string)
+	if ok {
+		options.LogApiUrl = logApiUrl
+	}
 
-	firetailMiddleware, err := firetail.GetMiddleware(
-		// TODO: expose all of the options through the krakend.json config
-		&firetail.Options{
-			OpenapiSpecPath: path,
-			LogApiKey:       "",
-			DebugErrs:       true,
-		},
-	)
+	// Create firetail middleware
+	firetailMiddleware, err := firetail.GetMiddleware(&options)
 	if err != nil {
 		return nil, err
 	}
