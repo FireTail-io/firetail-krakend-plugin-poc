@@ -8,6 +8,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"strconv"
 
 	firetail "github.com/FireTail-io/firetail-go-lib/middlewares/http"
 )
@@ -32,10 +33,6 @@ func (r registerer) registerHandlers(_ context.Context, extra map[string]interfa
 
 	// Extract options from config
 	options := firetail.Options{}
-	openapiSpecPath, ok := config["openapi-spec-path"].(string)
-	if ok {
-		options.OpenapiSpecPath = openapiSpecPath
-	}
 	logsApiToken, ok := config["logs-api-token"].(string)
 	if ok {
 		options.LogsApiToken = logsApiToken
@@ -44,7 +41,24 @@ func (r registerer) registerHandlers(_ context.Context, extra map[string]interfa
 	if ok {
 		options.LogsApiUrl = logsApiUrl
 	}
-	// TODO: parse enable-request-validation and enable-response-validation with strconv.ParseBool
+	openapiSpecPath, ok := config["openapi-spec-path"].(string)
+	if ok {
+		options.OpenapiSpecPath = openapiSpecPath
+	}
+	enableRequestValidation, ok := config["enable-request-validation"].(string)
+	if ok {
+		enableRequestValidationBool, err := strconv.ParseBool(enableRequestValidation)
+		if err == nil {
+			options.EnableRequestValidation = enableRequestValidationBool
+		}
+	}
+	enableResponseValidation, ok := config["enable-response-validation"].(string)
+	if ok {
+		enableResponseValidationBool, err := strconv.ParseBool(enableResponseValidation)
+		if err == nil {
+			options.EnableResponseValidation = enableResponseValidationBool
+		}
+	}
 
 	// Create firetail middleware
 	firetailMiddleware, err := firetail.GetMiddleware(&options)
