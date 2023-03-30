@@ -1,6 +1,10 @@
 name: Build & publish
 
 on:
+  push:
+    branches:
+      - 'feat-FIRE-1008-release-process'
+
   release:
     types: [published]
 
