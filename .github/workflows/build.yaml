@@ -41,7 +41,7 @@ jobs:
     strategy:
       matrix:
         arch: [ 'amd64' ]
-        krakend-version: [ '2.2.1' ]
+        krakend-builder-image: [ 'builder:2.2.1', 'builder:2.2', 'builder:2', 'builder-ee:2.2.0', 'builder-ee:2.2', 'builder-ee:2' ]
     steps:
       - uses: actions/checkout@v3
 
@@ -50,10 +50,10 @@ jobs:
 
       - name: Build plugin
         run: |
-          make build ARCH=${{ matrix.arch }} KRAKEND_VERSION=${{ matrix.krakend-version }} RELEASE_VERSION=${{ env.RELEASE_VERSION }}
+          make build ARCH=${{ matrix.arch }} KRAKEND_BUILDER_IMAGE=${{ matrix.krakend-builder-image }} RELEASE_VERSION=${{ env.RELEASE_VERSION }}
 
       - name: Upload plugin .so file as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}
-          path: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}.so
+          name: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-builder-image }}-${{ env.RELEASE_VERSION }}
+          path: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-builder-image }}-${{ env.RELEASE_VERSION }}.so
