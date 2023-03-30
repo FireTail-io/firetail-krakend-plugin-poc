@@ -61,8 +61,8 @@ See the [example/krakend.json](./example/krakend.json) for an example configurat
 
 | Field Name                   | Type   | Example                                                      | Optional | Description                                                  |
 | ---------------------------- | ------ | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
-| `logs-api-token`             | String | `"PS-XX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"` | Yes      | Your API token for the Firetail SaaS. If unset, no logs will be sent to Firetail. |
-| `logs-api-url`               | String | `"https://api.logging.eu-west-1.prod.firetail.app/logs/bulk"` | Yes      | The URL to which logs will be sent via POST requests         |
+| `logs-api-token`             | String | `"PS-XX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"` | Yes      | Your API token for the Firetail SaaS. If unset, no logs will be sent to Firetail |
+| `logs-api-url`               | String | `"https://api.logging.eu-west-1.prod.firetail.app/logs/bulk"` | Yes      | The URL to which logs will be sent via POST requests. Defaults to the Firetail SaaS' bulk logs endpoint |
 | `openapi-spec-path`          | String | `"/etc/krakend/appspec.yaml"`                                | Yes      | The absolute path to your appspec. By default, no appspec will be used |
 | `enable-request-validation`  | Bool   | `true`, `false`                                              | Yes      | Whether or not requests should be validated against the provided appspec. This defaults to `false` and requires `openapi-spec-path` to be defined |
 | `enable-response-validation` | Bool   | `true`, `false`                                              | Yes      | Whether or not requests should be validated against the provided appspec. This defaults to `false` and requires `openapi-spec-path` to be defined |
