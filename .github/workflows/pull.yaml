@@ -1,10 +1,6 @@
 name: Run tests & upload coverage to codecov on PR
 
 on:
-  push:
-    branches:
-     - 'feat-FIRE-1008-release-process'
-
   pull_request:
     branches: [ main, dev ]
 
