@@ -21,7 +21,10 @@
     "plugin/http-server": {
       "name": ["firetail-krakend-plugin"],
       "firetail-krakend-plugin": {
-        "openapi-spec-path": "/etc/krakend/appspec.yaml"
+        "openapi-spec-path": "/etc/krakend/appspec.yaml",
+        "enable-request-validation": true,
+        "enable-response-validation": true,
+        "debug-errs": true
       }
     }
   }
