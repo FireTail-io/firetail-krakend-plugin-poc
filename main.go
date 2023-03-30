@@ -7,8 +7,8 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
-	"strconv"
 
 	firetail "github.com/FireTail-io/firetail-go-lib/middlewares/http"
 )
@@ -32,40 +32,88 @@ func (r registerer) registerHandlers(_ context.Context, extra map[string]interfa
 	}
 
 	// Extract options from config
-	options := firetail.Options{}
-	logsApiToken, ok := config["logs-api-token"].(string)
-	if ok {
-		options.LogsApiToken = logsApiToken
-	}
-	logsApiUrl, ok := config["logs-api-url"].(string)
-	if ok {
-		options.LogsApiUrl = logsApiUrl
-	}
-	openapiSpecPath, ok := config["openapi-spec-path"].(string)
-	if ok {
-		options.OpenapiSpecPath = openapiSpecPath
-	}
-	enableRequestValidation, ok := config["enable-request-validation"].(string)
-	if ok {
-		enableRequestValidationBool, err := strconv.ParseBool(enableRequestValidation)
-		if err == nil {
-			options.EnableRequestValidation = enableRequestValidationBool
-		}
-	}
-	enableResponseValidation, ok := config["enable-response-validation"].(string)
-	if ok {
-		enableResponseValidationBool, err := strconv.ParseBool(enableResponseValidation)
-		if err == nil {
-			options.EnableResponseValidation = enableResponseValidationBool
-		}
+	options, err := extractOptions(config)
+	if err != nil {
+		return nil, err
 	}
 
 	// Create firetail middleware
-	firetailMiddleware, err := firetail.GetMiddleware(&options)
+	firetailMiddleware, err := firetail.GetMiddleware(options)
 	if err != nil {
 		return nil, err
 	}
 
 	// Return the handler wrapped in the firetail middleware
 	return firetailMiddleware(h), nil
+}
+
+func extractOptions(config map[string]interface{}) (*firetail.Options, error) {
+	// This is ugly. Slightly annoying KrakenD gives us map[string]interface{}
+
+	options := firetail.Options{}
+
+	logsApiToken, hasLogsApiToken := config["logs-api-token"]
+	if hasLogsApiToken {
+		logsApiTokenString, ok := logsApiToken.(string)
+		if !ok {
+			return nil, fmt.Errorf(
+				"logs-api-token must be of type string; got '%#v' (%T)",
+				logsApiToken, logsApiToken,
+			)
+		}
+		options.LogsApiToken = logsApiTokenString
+	}
+
+	logsApiUrl, hasLogsApiUrl := config["logs-api-url"]
+	if hasLogsApiUrl {
+		logsApiUrlString, ok := logsApiUrl.(string)
+		if !ok {
+			return nil, fmt.Errorf(
+				"logs-api-url must be of type string; got '%#v' (%T)",
+				logsApiUrl, logsApiUrl,
+			)
+		}
+		options.LogsApiUrl = logsApiUrlString
+	}
+
+	openapiSpecPath, hasOpenApiSpecPath := config["openapi-spec-path"]
+	if hasOpenApiSpecPath {
+		openapiSpecPathString, ok := openapiSpecPath.(string)
+		if !ok {
+			return nil, fmt.Errorf(
+				"openapi-spec-path must be of type string; got '%#v' (%T)",
+				openapiSpecPath, openapiSpecPath,
+			)
+		}
+		options.OpenapiSpecPath = openapiSpecPathString
+	}
+
+	enableRequestValidation, hasEnableRequestValidation := config["enable-request-validation"]
+	if hasEnableRequestValidation {
+		enableRequestValidationBool, ok := enableRequestValidation.(bool)
+		if !ok {
+			return nil, errors.New("enable-request-validation must be of type bool")
+		}
+		options.EnableRequestValidation = enableRequestValidationBool
+	}
+
+	enableResponseValidation, hasEnableResponseValidation := config["enable-response-validation"]
+	if hasEnableResponseValidation {
+		enableResponseValidationBool, ok := enableResponseValidation.(bool)
+		if !ok {
+			return nil, errors.New("enable-response-validation must be of type bool")
+		}
+		options.EnableResponseValidation = enableResponseValidationBool
+	}
+
+	debugErrs, hasDebugErrs := config["debug-errs"]
+	if hasDebugErrs {
+		debugErrsBool, ok := debugErrs.(bool)
+		if !ok {
+			return nil, errors.New("debug-errs must be of type bool")
+		}
+		options.DebugErrs = debugErrsBool
+	}
+
+	return &options, nil
 }
