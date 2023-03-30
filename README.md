@@ -1,4 +1,4 @@
-# Firetail KrakenD Plugin POC
+# Firetail KrakenD Plugin
 
 A KrakenD plugin for Firetail, built on [firetail-go-lib](https://github.com/FireTail-io/firetail-go-lib)'s http middleware.
 
@@ -6,7 +6,7 @@ A KrakenD plugin for Firetail, built on [firetail-go-lib](https://github.com/Fir
 
 ## Getting Started
 
-The Firetail KrakenD plugin distributable is a single `.so` file. To build, it, use the KrakenD builder image with a version that matches the version of the KrakenD runtime image you want to use:
+The Firetail KrakenD plugin distributable is a single `.so` file. To build, it, use the KrakenD builder image with a version that matches the version of the KrakenD runtime image you want to use, for example for version `2.2.1`:
 
 ```bash
 docker run --platform linux/amd64 -it -v "$PWD:/app" -w /app krakend/builder:2.2.1 go build -buildmode=plugin -o firetail-krakend-plugin.so .
@@ -14,7 +14,7 @@ docker run --platform linux/amd64 -it -v "$PWD:/app" -w /app krakend/builder:2.2
 
 You should now have a file named `firetail-krakend-plugin.so`. 
 
-An [`appspec.yaml`](./example/appspec.yaml) and [`krakend.json`](./example/krakend.json) is included in the [`example`](./example) directory to test out the plugin. To get this running, first copy the `.so` file into the `example` directory and `cd` into it:
+An [`appspec.yaml`](./example/appspec.yaml) and [`krakend.json`](./example/krakend.json) is included in the [`example`](./example) directory to test out the plugin. To get this running, first move the `.so` file into the `example` directory and `cd` into it:
 
 ```bash
 mv firetail-krakend-plugin.so example
