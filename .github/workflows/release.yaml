@@ -32,11 +32,17 @@ jobs:
         run: |
           make build ARCH=${{ matrix.arch }} KRAKEND_BUILDER_IMAGE=${{ matrix.krakend-builder-image }} RELEASE_VERSION=${{ env.RELEASE_VERSION }}
 
+      - name: Sanitise KrakenD builder image name
+        run: |
+          KRAKEND_BUILDER_IMAGE=${{ matrix.krakend-builder-image }}
+          KRAKEND_BUILDER_IMAGE=${KRAKEND_BUILDER_IMAGE/:/-}
+          echo KRAKEND_BUILDER_IMAGE=${KRAKEND_BUILDER_IMAGE} >> $GITHUB_ENV
+
       - name: Upload plugin .so file as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-builder-image }}-${{ env.RELEASE_VERSION }}
-          path: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-builder-image }}-${{ env.RELEASE_VERSION }}.so
+          name: firetail-krakend-plugin-${{ matrix.arch }}-${{ env.KRAKEND_BUILDER_IMAGE }}-${{ env.RELEASE_VERSION }}
+          path: firetail-krakend-plugin-${{ matrix.arch }}-${{ env.KRAKEND_BUILDER_IMAGE }}-${{ env.RELEASE_VERSION }}.so
 
       - name: Get release
         id: get_release
@@ -50,6 +56,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_name: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-builder-image }}-${{ env.RELEASE_VERSION }}.so
-          asset_path: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-builder-image }}-${{ env.RELEASE_VERSION }}.so
+          asset_name: firetail-krakend-plugin-${{ matrix.arch }}-${{ env.KRAKEND_BUILDER_IMAGE }}-${{ env.RELEASE_VERSION }}.so
+          asset_path: firetail-krakend-plugin-${{ matrix.arch }}-${{ env.KRAKEND_BUILDER_IMAGE }}-${{ env.RELEASE_VERSION }}.so
           asset_content_type: application/x-sharedlib
