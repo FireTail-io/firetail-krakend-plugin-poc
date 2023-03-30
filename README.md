@@ -57,9 +57,10 @@ See the [example/krakend.json](./example/krakend.json) for an example configurat
 
 | Field Name                   | Type   | Example                                                      | Description                                                  |
 | ---------------------------- | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `logs-api-token`             | String | "PS-XX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" | Your API token for the Firetail SaaS. If unset, no logs will be sent to Firetail. |
-| `logs-api-url`               | String | "https://api.logging.eu-west-1.prod.firetail.app/logs/bulk"  | The URL to which logs will be sent via POST requests         |
-| `openapi-spec-path`          | String | "/etc/krakend/appspec.yaml"                                  | The absolute path to your appspec. By default, no appspec will be used |
-| `enable-request-validation`  | String | "1", "t", "T", "TRUE", "true", "True", "0", "f", "F", "FALSE", "false", "False" | Whether or not requests should be validated against the provided appspec. This is disabled by default and requires `openapi-spec-path` to be defined |
-| `enable-response-validation` | String | "1", "t", "T", "TRUE", "true", "True", "0", "f", "F", "FALSE", "false", "False" | Whether or not requests should be validated against the provided appspec. This is disabled by default and requires `openapi-spec-path` to be defined |
+| `logs-api-token`             | String | `"PS-XX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"` | Your API token for the Firetail SaaS. If unset, no logs will be sent to Firetail. |
+| `logs-api-url`               | String | `"https://api.logging.eu-west-1.prod.firetail.app/logs/bulk"` | The URL to which logs will be sent via POST requests         |
+| `openapi-spec-path`          | String | `"/etc/krakend/appspec.yaml"`                                | The absolute path to your appspec. By default, no appspec will be used |
+| `enable-request-validation`  | Bool   | `true`, `false`                                              | Whether or not requests should be validated against the provided appspec. This is disabled by default and requires `openapi-spec-path` to be defined |
+| `enable-response-validation` | Bool   | `true`, `false`                                              | Whether or not requests should be validated against the provided appspec. This is disabled by default and requires `openapi-spec-path` to be defined |
+| `debug-errs`                 | Bool   | `true`, `false`                                              | Whether or not to include more verbose information in the RFC7807 error responses' `details` member, returned when requests or responses are blocked by validation if enabled |
 
