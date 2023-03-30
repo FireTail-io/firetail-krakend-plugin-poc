@@ -14,7 +14,7 @@ docker run --platform linux/amd64 -it -v "$PWD:/app" -w /app krakend/builder:2.2
 
 You should now have a file named `firetail-krakend-plugin.so`. 
 
-An [`appspec.yaml`](./example/appspec.yaml) and [`krakend.json`](./example/krakend.json) is included in the [`example`](./example) directory to test out the plugin. To get this running, first move the `.so` file into the `example` directory and `cd` into it:
+An [`appspec.yaml`](./example/appspec.yaml) and [`krakend.json`](./example/krakend.json) is included in the [`example`](./example) directory to test out the plugin. To get this running, first move the `.so` file into the [`example`](./example) directory and `cd` into it:
 
 ```bash
 mv firetail-krakend-plugin.so example
@@ -27,7 +27,7 @@ You can then run the KrakenD runtime image with the plugin and provided example 
 docker run --platform linux/amd64 -p 8080:8080 -v $PWD:/etc/krakend/ devopsfaith/krakend run --config /etc/krakend/krakend.json
 ```
 
-Curling KrakenD's `/__health` endpoint should produce a result similar to the following:
+Curling KrakenD's [`/__health`](http://localhost:8080/__health) endpoint should produce a result similar to the following:
 
 ```bash
 curl localhost:8080/__health
