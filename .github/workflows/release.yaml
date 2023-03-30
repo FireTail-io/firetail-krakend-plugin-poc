@@ -1,0 +1,55 @@
+name: Build & publish
+
+on:
+  release:
+    types: [published]
+
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        type: string
+  
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-package:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [ 'amd64' ]
+        krakend-version: [ '2.2.1' ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set RELEASE_VERSION
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Build plugin
+        run: |
+          make build ARCH=${{ matrix.arch }} KRAKEND_VERSION=${{ matrix.krakend-version }} RELEASE_VERSION=${{ env.RELEASE_VERSION }}
+
+      - name: Upload plugin .so file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}
+          path: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}.so
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Upload release binary
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_name: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}
+          asset_path: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}.so
+          asset_content_type: application/x-sharedlib
