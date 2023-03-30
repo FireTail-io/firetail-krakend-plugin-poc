@@ -42,18 +42,18 @@ jobs:
           name: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}
           path: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}.so
 
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@v1.3.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      # - name: Get release
+      #   id: get_release
+      #   uses: bruceadams/get-release@v1.3.2
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Upload release binary
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_name: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}
-          asset_path: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}.so
-          asset_content_type: application/x-sharedlib
+      # - name: Upload release binary
+      #   uses: actions/upload-release-asset@v1.0.2
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #   with:
+      #     upload_url: ${{ steps.get_release.outputs.upload_url }}
+      #     asset_name: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}
+      #     asset_path: firetail-krakend-plugin-${{ matrix.arch }}-${{ matrix.krakend-version }}-${{ env.RELEASE_VERSION }}.so
+      #     asset_content_type: application/x-sharedlib
