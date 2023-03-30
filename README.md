@@ -49,9 +49,13 @@ curl localhost:8080/test/1
 
 
 
-## Configuration
+## Installation Into Existing KrakenD Instances
 
-See the KrakenD docs on [injecting plugins](https://www.krakend.io/docs/extending/injecting-plugins/).
+The Firetail KrakenD plugin is a HTTP server plugin. See the KrakenD docs on [injecting plugins](https://www.krakend.io/docs/extending/injecting-plugins/) for how to load it into your KrakenD instances, and the following section on [Configuration](#configuration) for how to configure the Firetail KrakenD plugin once you have successfully injected it.
+
+
+
+## Configuration
 
 See the [example/krakend.json](./example/krakend.json) for an example configuration of the Firetail KrakenD plugin. The following table describes all of the currently supported configuration fields, all of which are optional:
 
