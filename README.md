@@ -85,7 +85,6 @@ Once you have a token for the Firetail SaaS' logs API, you will need to add it t
     }
   }
 }
-
 ```
 
 ℹ️ See the [Configuration](#configuration) section for information on the other available config fields.
