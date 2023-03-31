@@ -51,7 +51,7 @@ curl localhost:8080/test/1
 
 ## Public Releases
 
-You do not have to build the Firetail KrakenD plugin yourself. Versioned releases of the Firetail KrakenD plugin are available as [release assets from this repository](https://github.com/FireTail-io/firetail-krakend-plugin-poc/releases). The naming converntion is:
+You do not have to build the Firetail KrakenD plugin yourself. Versioned releases of the Firetail KrakenD plugin are available as [release assets from this repository](https://github.com/FireTail-io/firetail-krakend-plugin-poc/releases). The naming convention is:
 
 ```bash
 firetail-krakend-plugin-${ARCH}-$(subst :,-,${KRAKEND_BUILDER_IMAGE})-${RELEASE_VERSION}.so
