@@ -49,9 +49,25 @@ curl localhost:8080/test/1
 
 
 
+## Public Releases
+
+You do not have to build the Firetail KrakenD plugin yourself. Versioned releases of the Firetail KrakenD plugin are available as [release assets from this repository](https://github.com/FireTail-io/firetail-krakend-plugin-poc/releases). The naming convention is:
+
+```bash
+firetail-krakend-plugin-${ARCH}-$(subst :,-,${KRAKEND_BUILDER_IMAGE})-${RELEASE_VERSION}.so
+```
+
+- `${ARCH}` is either `amd64` or `arm64`.
+- `${KRAKEND_BUILDER_IMAGE}` correlates to the name of the KrakenD builder image used to build the plugin, which you will need to match to your KrakenD runtime image version. For example:
+  - For runtime image `krakend/krakend:2.2.1`, `KRAKEND_BUILDER_IMAGE` would be `builder-2.2.1`
+  - For runtime image `krakend/krakend-ee:2.2`, `KRAKEND_BUILDER_IMAGE` would be `builder-ee-2.2`
+- `${RELEASE_VERSION}` is the release version of the Firetail KrakenD plugin.
+
+
+
 ## Setup With FireTail SaaS
 
-To get the FireTail KrakenD plugin to send logs to the FireTail SaaS platform, you need to create an API or app token to authenticate with the FireTail SaaS' logs API. This can be done using the FireTail SaaS' web UI at [firetail.app](https://firetail.app/).
+To get the FireTail KrakenD plugin to send logs to the FireTail SaaS platform, you need to create an API or app token to authenticate with the FireTail SaaS' logs API. This can be done using the FireTail SaaS' web UI at [firetail.app](https://firetail.app/). See the docs for [creating an API token](https://firetail.io/docs/create-an-api-token) or [creating an app token](https://firetail.io/docs/create-app-token).
 
 When you have an API token, add it to your KrakenD configuration file as `logs-api-token` under the plugin's configuration, for example:
 
@@ -69,10 +85,9 @@ When you have an API token, add it to your KrakenD configuration file as `logs-a
     }
   }
 }
-
 ```
 
-See the [Configuration](#configuration) section for information on the other available config fields.
+ℹ️ See the [Configuration](#configuration) section for information on the other available config fields.
 
 ℹ️ Logs are sent to FireTail SaaS in batches, so logs may not appear immediately on the FireTail SaaS' web UI.
 
@@ -96,4 +111,3 @@ See the [example/krakend.json](./example/krakend.json) for an example configurat
 | `enable-request-validation`  | Bool   | `true`, `false`                                              | Yes      | Whether or not requests should be validated against the provided appspec. This defaults to `false` and requires `openapi-spec-path` to be defined. |
 | `enable-response-validation` | Bool   | `true`, `false`                                              | Yes      | Whether or not requests should be validated against the provided appspec. This defaults to `false` and requires `openapi-spec-path` to be defined. |
 | `debug-errs`                 | Bool   | `true`, `false`                                              | Yes      | Whether or not to include more verbose information in the RFC7807 error responses' `details` member, returned when requests or responses are blocked by validation if enabled. Defaults to `false`. |
-
