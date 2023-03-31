@@ -49,6 +49,22 @@ curl localhost:8080/test/1
 
 
 
+## Public Releases
+
+You do not have to build the Firetail KrakenD plugin yourself. Versioned releases of the Firetail KrakenD plugin are available as [release assets from this repository](https://github.com/FireTail-io/firetail-krakend-plugin-poc/releases). The naming converntion is:
+
+```bash
+firetail-krakend-plugin-${ARCH}-$(subst :,-,${KRAKEND_BUILDER_IMAGE})-${RELEASE_VERSION}.so
+```
+
+- `${ARCH}` is either `amd64` or `arm64`.
+- `${KRAKEND_BUILDER_IMAGE}` correlates to the name of the KrakenD builder image used to build the plugin, which you will need to match to your KrakenD runtime image version. For example:
+  - For runtime image `krakend/krakend:2.2.1`, `KRAKEND_BUILDER_IMAGE` would be `builder-2.2.1`
+  - For runtime image `krakend/krakend-ee:2.2`, `KRAKEND_BUILDER_IMAGE` would be `builder-ee-2.2`
+- `${RELEASE_VERSION}` is the release version of the Firetail KrakenD plugin.
+
+
+
 ## Setup With Firetail SaaS
 
 To get the Firetail KrakenD plugin to send logs to the Firetail SaaS, you need to create an API or app token to authenticate with the Firetail SaaS' logs API. This can be done via the Firetail SaaS' web UI at [firetail.app](https://firetail.app/).
