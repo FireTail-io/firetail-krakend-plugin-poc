@@ -6,7 +6,7 @@ A KrakenD plugin for Firetail, built on [firetail-go-lib](https://github.com/Fir
 
 ## Getting Started
 
-The Firetail KrakenD plugin distributable is a single `.so` file. To build, it, use the KrakenD builder image with a version that matches the version of the KrakenD runtime image you want to use, for example for version `2.2.1`:
+The Firetail KrakenD plugin distributable is a single `.so` file. To build it, use the KrakenD builder image with a version that matches the version of the KrakenD runtime image you want to use, for example for version `2.2.1`:
 
 ```bash
 docker run --platform linux/amd64 -it -v "$PWD:/app" -w /app krakend/builder:2.2.1 go build -buildmode=plugin -o firetail-krakend-plugin.so .
@@ -88,7 +88,7 @@ Once you have a token for the Firetail SaaS' logs API, you will need to add it t
 
 ```
 
-See the [Configuration](#configuration) section for information on the other available config fields.
+ℹ️ See the [Configuration](#configuration) section for information on the other available config fields.
 
 ℹ️ Logs are sent to the Firetail SaaS in batches, so logs may not appear immediately on the Firetail SaaS' web UI.
 
@@ -102,14 +102,14 @@ The Firetail KrakenD plugin is a HTTP server plugin. See the KrakenD docs on [in
 
 ## Configuration
 
-See the [example/krakend.json](./example/krakend.json) for an example configuration of the Firetail KrakenD plugin. The following table describes all of the currently supported configuration fields, all of which are optional:
+See the [example/krakend.json](./example/krakend.json) for an example configuration of the Firetail KrakenD plugin. The following table describes all of the currently supported configuration fields:
 
 | Field Name                   | Type   | Example                                                      | Optional | Description                                                  |
 | ---------------------------- | ------ | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
-| `logs-api-token`             | String | `"PS-XX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"` | Yes      | Your API token for the Firetail SaaS. If unset, no logs will be sent to Firetail |
-| `logs-api-url`               | String | `"https://api.logging.eu-west-1.prod.firetail.app/logs/bulk"` | Yes      | The URL to which logs will be sent via POST requests. Defaults to the Firetail SaaS' bulk logs endpoint |
-| `openapi-spec-path`          | String | `"/etc/krakend/appspec.yaml"`                                | Yes      | The absolute path to your appspec. By default, no appspec will be used |
-| `enable-request-validation`  | Bool   | `true`, `false`                                              | Yes      | Whether or not requests should be validated against the provided appspec. This defaults to `false` and requires `openapi-spec-path` to be defined |
-| `enable-response-validation` | Bool   | `true`, `false`                                              | Yes      | Whether or not requests should be validated against the provided appspec. This defaults to `false` and requires `openapi-spec-path` to be defined |
-| `debug-errs`                 | Bool   | `true`, `false`                                              | Yes      | Whether or not to include more verbose information in the RFC7807 error responses' `details` member, returned when requests or responses are blocked by validation if enabled. Defaults to `false` |
+| `logs-api-token`             | String | `"PS-XX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"` | Yes      | Your API token for the Firetail SaaS. If unset, no logs will be sent to Firetail. |
+| `logs-api-url`               | String | `"https://api.logging.eu-west-1.prod.firetail.app/logs/bulk"` | Yes      | The URL to which logs will be sent via POST requests. Defaults to the Firetail SaaS' bulk logs endpoint. |
+| `openapi-spec-path`          | String | `"/etc/krakend/appspec.yaml"`                                | Yes      | The absolute path to your appspec. By default, no appspec will be used. |
+| `enable-request-validation`  | Bool   | `true`, `false`                                              | Yes      | Whether or not requests should be validated against the provided appspec. This defaults to `false` and requires `openapi-spec-path` to be defined. |
+| `enable-response-validation` | Bool   | `true`, `false`                                              | Yes      | Whether or not requests should be validated against the provided appspec. This defaults to `false` and requires `openapi-spec-path` to be defined. |
+| `debug-errs`                 | Bool   | `true`, `false`                                              | Yes      | Whether or not to include more verbose information in the RFC7807 error responses' `details` member, returned when requests or responses are blocked by validation if enabled. Defaults to `false`. |
 
