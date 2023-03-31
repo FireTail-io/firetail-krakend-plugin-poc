@@ -67,9 +67,9 @@ firetail-krakend-plugin-${ARCH}-$(subst :,-,${KRAKEND_BUILDER_IMAGE})-${RELEASE_
 
 ## Setup With Firetail SaaS
 
-To get the Firetail KrakenD plugin to send logs to the Firetail SaaS, you need to create an API or app token to authenticate with the Firetail SaaS' logs API. This can be done via the Firetail SaaS' web UI at [firetail.app](https://firetail.app/).
+To get the Firetail KrakenD plugin to send logs to the Firetail SaaS, you need to create an API or app token to authenticate with the Firetail SaaS' logs API. This can be done via the Firetail SaaS' web UI at [firetail.app](https://firetail.app/). See the docs for [creating an API token](https://firetail.io/docs/create-an-api-token) or [creating an app token](https://firetail.io/docs/create-app-tokent).
 
-Once you have an API token, you will need to add it to your KrakenD configuration file as `logs-api-token` under plugin's configuration, for example:
+Once you have a token for the Firetail SaaS' logs API, you will need to add it to your KrakenD configuration file as `logs-api-token` under the plugin's configuration, for example:
 
 ```json
 {
